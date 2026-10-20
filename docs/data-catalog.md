@@ -901,6 +901,16 @@ interface StoredCustomVrmAnimation {
 | :--- | :--- | :--- | :--- |
 | `settings/faculties/defaults` | `GlobalFacultyDefaultsState` | `FACTORY_SAFE_DEFAULTS` | `stores/faculty-defaults.ts` |
 
+### 4.2c Saved Module Setups & ZZLive Preset
+
+| Key | Type | Default | File |
+| :--- | :--- | :--- | :--- |
+| `settings/module-setups` | `SavedModuleSetups` | `{ consciousness: [], speech: [], hearing: [], vision: [] }` | `stores/module-setups.ts` |
+| `settings/zzlive/launcher-url` | `string` | `'http://127.0.0.1:8070'` | `stores/zzlive.ts` |
+| `settings/zzlive/server-url` | `string` | `'http://127.0.0.1:8080/v1/'` | `stores/zzlive.ts` |
+| `settings/zzlive/key` | `string` | `''` | `stores/zzlive.ts` |
+| `settings/zzlive/persona` | `'zoey' \| 'zane'` | `'zoey'` | `stores/zzlive.ts` |
+
 ### 4.3 Consciousness (LLM)
 
 | Key | Type | Default | File |

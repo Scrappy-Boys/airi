@@ -279,6 +279,22 @@ export const SETTINGS_CATALOG_ITEMS: CatalogNodeItem[] = [
 
   // Cluster: PERCEPTION & FACULTIES 感
   {
+    id: 'mod-zzlive',
+    label: 'ZZLive',
+    shortLabel: 'ZZLive',
+    titleKey: 'settings.pages.modules.zzlive.title',
+    descriptionKey: 'settings.pages.modules.zzlive.description',
+    description: 'One button that downloads the ZZLive models and sets Chat, Speech, and Hearing to Zoey and Zane',
+    glyph: '双',
+    clusterGroup: 'PERCEPTION & FACULTIES 感',
+    route: '/settings/modules/zzlive',
+    icon: 'i-solar:users-group-two-rounded-bold-duotone',
+    order: 0.5,
+    parentId: 'area-modules',
+    kind: 'page',
+    keywords: ['zzlive', 'zoey', 'zane', 'preset', 'setup', 'local'],
+  },
+  {
     id: 'mod-consciousness',
     label: 'Consciousness & Mind',
     shortLabel: 'Mind',

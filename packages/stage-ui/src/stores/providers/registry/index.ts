@@ -8,6 +8,7 @@ import { chatLocalMetadata } from './chat-local'
 import { localEngineMetadata } from './local-engines'
 import { createSpeechMetadata } from './speech'
 import { transcriptionMetadata } from './transcription'
+import { zzliveMetadata } from './zzlive'
 
 export function createProviderRegistry(
   t: ComposerTranslation,
@@ -15,6 +16,7 @@ export function createProviderRegistry(
 ): Record<string, ProviderMetadata> {
   const mergedMetadata: Record<string, ProviderMetadata> = {
     ...transcriptionMetadata,
+    ...zzliveMetadata,
     ...createSpeechMetadata(t),
     ...localEngineMetadata,
     ...chatLocalMetadata,

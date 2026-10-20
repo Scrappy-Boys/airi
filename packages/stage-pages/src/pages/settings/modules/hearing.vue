@@ -9,7 +9,7 @@ import {
   electronSetMicToggleHotkey,
 
 } from '@proj-airi/stage-shared/shortcuts'
-import { Alert, ErrorContainer, LevelMeter, RadioCardManySelect, RadioCardSimple, TestDummyMarker, ThresholdMeter, TimeSeriesChart } from '@proj-airi/stage-ui/components'
+import { Alert, ErrorContainer, LevelMeter, ModuleSetupsBar, RadioCardManySelect, RadioCardSimple, TestDummyMarker, ThresholdMeter, TimeSeriesChart } from '@proj-airi/stage-ui/components'
 import { useAnalytics, useAudioAnalyzer, useAudioRecorder } from '@proj-airi/stage-ui/composables'
 import { useVAD } from '@proj-airi/stage-ui/stores/ai/models/vad'
 import { useAudioContext } from '@proj-airi/stage-ui/stores/audio'
@@ -539,6 +539,8 @@ onUnmounted(() => {
   <div flex="~ col md:row gap-6">
     <div bg="neutral-100 dark:[rgba(0,0,0,0.3)]" rounded-xl p-4 flex="~ col gap-4" class="h-fit w-full md:w-[40%]">
       <div flex="~ col gap-4">
+        <ModuleSetupsBar module="hearing" />
+
         <!-- Audio Input Selection -->
         <div>
           <FieldSelect

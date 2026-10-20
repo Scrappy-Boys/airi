@@ -706,6 +706,62 @@ pages:
       title: System 1 Coprocessor
       description: High-speed cognitive coprocessor for zero-shot query triage,
         batched candidate reranking, and affective heuristics
+    zzlive:
+      title: ZZLive
+      description: Zoey and Zane, with their memory, on your own computer
+      switch-back: To go back, apply "Before ZZLive" in Saved setups on each module
+        page. Chat, Speech, and Hearing each keep their own list.
+      setup:
+        title: Use the ZZLive setup
+        description: One button sets Chat, Speech, and Hearing to ZZLive. It downloads
+          the models that are missing, starts the ZZLive model server, and saves
+          your current choices as "Before ZZLive" first.
+        key:
+          label: ZZLive key
+          description: Copy it from the ZZLive page at http://127.0.0.1:8070, or from the
+            airi_key.txt file in the ZZLive folder.
+        persona:
+          label: Character
+          description: The character who answers in chat and speaks with their own voice.
+        download-size: '{size} to download'
+        not-reached: ZZLive did not answer
+        done: '{name} now answers chat, speaks, and listens through ZZLive.'
+        apply: Use ZZLive setup
+        check: Check again
+        advanced: Addresses
+        launcher-url:
+          label: Launcher address
+          description: The ZZLive launcher. It downloads models and starts the model server.
+        server-url:
+          label: Model server address
+          description: The OpenAI-format address of the ZZLive model server. It ends with
+            /v1/.
+      phase:
+        idle: Ready
+        checking: Checking ZZLive...
+        downloading: Downloading models...
+        starting: Starting the model server. The first start can take a few minutes...
+        applying: Applying the setup...
+        done: Done
+        error: The setup stopped
+      model-state:
+        present: Ready
+        missing: Not downloaded
+        waiting: Waiting
+        downloading: Downloading
+        done: Downloaded
+        failed: Failed
+    saved-setups:
+      title: Saved setups
+      description: Save the current choice under a name, and apply it again with one button.
+      applied: Applied
+      apply: Apply
+      remove: Remove this saved setup
+      empty: No saved setups yet.
+      name:
+        label: Name
+        placeholder: For example, Cloud or ZZLive
+      save: Save current
   providers:
     explained:
       chat: Text generation model providers. e.g. OpenRouter, OpenAI, Ollama.
@@ -1417,6 +1473,21 @@ pages:
         title: Local Laya (On-Device)
         description: Client-side ModernBERT System 1 classification running locally via
           WebGPU/WASM
+      zzlive:
+        title: ZZLive
+        description: Zoey and Zane, with their own memory, on your own computer.
+        fields:
+          key:
+            label: ZZLive key
+            description: Copy it from the ZZLive page at http://127.0.0.1:8070, or from
+              airi_key.txt in the ZZLive folder.
+          base-url:
+            description: The ZZLive model server. The default is http://127.0.0.1:8080/v1/.
+      zzlive-speech:
+        description: Kokoro, with the voices of Zoey and Zane.
+        playground-text: Hi! It's me. Can you hear me okay?
+      zzlive-transcription:
+        description: Whisper on the ZZLive server.
     title: Inference Providers
     cache:
       title: Model Cache

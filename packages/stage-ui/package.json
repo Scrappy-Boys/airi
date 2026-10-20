@@ -33,6 +33,7 @@
     "./constants": "./src/constants/index.ts",
     "./features/motions/live2d": "./src/features/motions/live2d/index.ts",
     "./features/*": "./src/features/*",
+    "./libs/providers/providers/zzlive": "./src/libs/providers/providers/zzlive/index.ts",
     "./libs/*": "./src/libs/*.ts",
     "./libs/audio": "./src/libs/audio/index.ts",
     "./libs/audio/*": "./src/libs/audio/*",
