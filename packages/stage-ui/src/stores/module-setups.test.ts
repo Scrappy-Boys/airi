@@ -1,5 +1,6 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 
 import { useFacultyDefaultsStore } from './faculty-defaults'
 import { useModuleSetupsStore } from './module-setups'
@@ -130,6 +131,30 @@ describe('saved module setups', () => {
 
     expect(vision.activeProvider).toBe('ollama')
     expect(vision.activeModel).toBe('llava')
+  })
+
+  it('stores plain strings, not JSON-quoted ones, even when the module already had the selection', async () => {
+    const store = useModuleSetupsStore()
+    const selections = {
+      consciousness: { provider: 'zzlive', model: 'zoey' },
+      speech: { provider: 'zzlive-speech', model: 'kokoro', voiceId: 'zoey' },
+      hearing: { provider: 'zzlive-transcription', model: 'whisper' },
+    } as const
+
+    // Twice: the second time the module stores already hold the values and write nothing.
+    for (let round = 0; round < 2; round++) {
+      for (const [module, selection] of Object.entries(selections))
+        await store.applySelection(module as keyof typeof selections, selection)
+      await nextTick()
+    }
+
+    expect(localStorage.getItem('settings/consciousness/active-provider')).toBe('zzlive')
+    expect(localStorage.getItem('settings/consciousness/active-model')).toBe('zoey')
+    expect(localStorage.getItem('settings/speech/active-provider')).toBe('zzlive-speech')
+    expect(localStorage.getItem('settings/speech/active-model')).toBe('kokoro')
+    expect(localStorage.getItem('settings/speech/voice')).toBe('zoey')
+    expect(localStorage.getItem('settings/hearing/active-provider')).toBe('zzlive-transcription')
+    expect(localStorage.getItem('settings/hearing/active-model')).toBe('whisper')
   })
 
   it('removes a setup, and refuses to apply a removed one', async () => {

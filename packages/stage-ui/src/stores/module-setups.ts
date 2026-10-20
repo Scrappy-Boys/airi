@@ -31,6 +31,30 @@ export type SavedModuleSetups = Record<SetupModuleId, SavedModuleSetup[]>
 
 export const SETUP_MODULE_IDS: readonly SetupModuleId[] = ['consciousness', 'speech', 'hearing', 'vision']
 
+/**
+ * The keys the module stores read as plain strings. The faculty defaults write the same keys as
+ * JSON (`"zzlive"`, with the quotes) for chat, speech and hearing, and the module stores would read
+ * the quotes as part of the provider name.
+ */
+const PLAIN_STRING_KEYS: Partial<Record<SetupModuleId, { provider: string, model: string, voiceId?: string }>> = {
+  consciousness: { provider: 'settings/consciousness/active-provider', model: 'settings/consciousness/active-model' },
+  speech: { provider: 'settings/speech/active-provider', model: 'settings/speech/active-model', voiceId: 'settings/speech/voice' },
+  hearing: { provider: 'settings/hearing/active-provider', model: 'settings/hearing/active-model' },
+}
+
+function writePlainStrings(module: SetupModuleId, selection: ModuleSelection) {
+  const keys = PLAIN_STRING_KEYS[module]
+  if (!keys || typeof window === 'undefined')
+    return
+  try {
+    window.localStorage.setItem(keys.provider, selection.provider)
+    window.localStorage.setItem(keys.model, selection.model)
+    if (keys.voiceId)
+      window.localStorage.setItem(keys.voiceId, selection.voiceId ?? '')
+  }
+  catch {}
+}
+
 function emptySetups(): SavedModuleSetups {
   return { consciousness: [], speech: [], hearing: [], vision: [] }
 }
@@ -147,6 +171,10 @@ export const useModuleSetupsStore = defineStore('module-setups', () => {
         break
       }
     }
+
+    // A module store only writes its key when its value changes, so a selection it already had
+    // would keep the quoted copy the faculty defaults wrote above.
+    writePlainStrings(module, selection)
   }
 
   async function apply(module: SetupModuleId, id: string) {
