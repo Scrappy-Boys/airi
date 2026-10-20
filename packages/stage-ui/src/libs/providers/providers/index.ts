@@ -40,6 +40,7 @@ import './volcengine-coding-plan'
 import './typesafe-ai'
 import './laya-local'
 import './cloudflare-workers-ai'
+import './zzlive'
 
 export {
   getDefinedProvider,

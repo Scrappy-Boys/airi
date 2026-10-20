@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Alert, ErrorContainer, RadioCardManySelect, RadioCardSimple } from '@proj-airi/stage-ui/components'
+import { Alert, ErrorContainer, ModuleSetupsBar, RadioCardManySelect, RadioCardSimple } from '@proj-airi/stage-ui/components'
 import { useAnalytics } from '@proj-airi/stage-ui/composables'
 import { useLLM } from '@proj-airi/stage-ui/stores/llm'
 import { useAiriCardStore } from '@proj-airi/stage-ui/stores/modules/airi-card'
@@ -335,6 +335,8 @@ async function runSimulation() {
   <div class="w-full flex flex-col gap-6 lg:flex-row">
     <!-- Left Column: Vision Provider & Model Selection (~42% on landscape) -->
     <div class="w-full shrink-0 lg:w-[42%] xl:w-[38%] space-y-6">
+      <ModuleSetupsBar module="vision" />
+
       <!-- 1. Vision Provider Selection Card -->
       <div class="border border-neutral-200/80 rounded-2xl bg-white/70 p-5 space-y-4 dark:border-neutral-800/80 dark:bg-neutral-900/60">
         <div>

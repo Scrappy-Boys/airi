@@ -7,6 +7,7 @@ import { createAudioBlob } from '@proj-airi/stage-shared'
 import {
   Alert,
   ErrorContainer,
+  ModuleSetupsBar,
   RadioCardManySelect,
   RadioCardSimple,
   TestDummyMarker,
@@ -381,6 +382,8 @@ function handleDeleteProvider(providerId: string) {
     <!-- Tab Contents -->
     <div v-if="activeTab === 'global'" flex="~ col md:row gap-6">
       <div bg="neutral-100 dark:[rgba(0,0,0,0.3)]" rounded-xl p-4 flex="~ col gap-4" class="h-fit w-full md:w-[40%]">
+        <ModuleSetupsBar module="speech" />
+
         <!-- Audio Output Selection -->
         <div>
           <FieldSelect

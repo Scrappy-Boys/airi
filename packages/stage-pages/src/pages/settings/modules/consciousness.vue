@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ConsciousnessWorkspace } from '@proj-airi/stage-ui/components'
+import { ConsciousnessWorkspace, ModuleSetupsBar } from '@proj-airi/stage-ui/components'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -17,6 +17,8 @@ const { t } = useI18n()
         {{ t('settings.pages.consciousness.description', 'Configure the language model brain driving your companion’s persona, reasoning, and dialogues.') }}
       </p>
     </div>
+
+    <ModuleSetupsBar module="consciousness" />
 
     <!-- Decomposed Canonical Consciousness Workspace in Settings Mode -->
     <ConsciousnessWorkspace mode="settings" />
