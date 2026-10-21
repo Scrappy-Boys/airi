@@ -21,6 +21,8 @@ import { until } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useProviderModuleActions } from '../../../composables/use-provider-module-actions'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 const { t } = useI18n()
 
@@ -533,9 +535,13 @@ onUnmounted(() => {
 
   audioCleanups.value.forEach(cleanup => cleanup())
 })
+
+const { apply: applyModule, test: testModule } = useProviderModuleActions(activeTranscriptionProvider)
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div flex="~ col md:row gap-6">
     <div bg="neutral-100 dark:[rgba(0,0,0,0.3)]" rounded-xl p-4 flex="~ col gap-4" class="h-fit w-full md:w-[40%]">
       <div flex="~ col gap-4">
@@ -1052,6 +1058,7 @@ onUnmounted(() => {
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <route lang="yaml">

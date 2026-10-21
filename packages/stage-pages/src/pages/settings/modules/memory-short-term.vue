@@ -5,6 +5,9 @@ import { Button, FieldInput, FieldSelect } from '@proj-airi/ui'
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, ref, watch } from 'vue'
 import { toast } from 'vue-sonner'
+import { useAiriCardStore } from '@proj-airi/stage-ui/stores/modules/airi-card'
+import { storeToRefs } from 'pinia'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 interface CharacterOption { value: string, label: string }
 
@@ -162,9 +165,23 @@ watch([windowSize, tokensPerDay], ([newWindowSize, newTokensPerDay]) => {
     }
   }
 })
+
+const { activeCardId: moduleCardId } = storeToRefs(useAiriCardStore())
+
+function applyModule() {
+  return 'Memory settings applied'
+}
+
+function testModule() {
+  if (!moduleCardId.value)
+    throw new Error('No active character card, memory cannot be scoped')
+  return 'Active character card found'
+}
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div class="font-urbanist flex flex-col gap-8 pb-12">
     <!-- Premium Header -->
     <header class="relative overflow-hidden border border-neutral-200 rounded-3xl bg-neutral-100/40 p-8 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/40">
@@ -459,6 +476,7 @@ watch([windowSize, tokensPerDay], ([newWindowSize, newTokensPerDay]) => {
 
     <JournalPreviewModal />
   </div>
+</div>
 </template>
 
 <style scoped>

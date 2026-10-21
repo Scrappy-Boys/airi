@@ -13,6 +13,7 @@ import { useDebounceFn } from '@vueuse/core'
 import { computed, onMounted, ref } from 'vue'
 
 import McpConnectionTestPanel from './components/McpConnectionTestPanel.vue'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 // UI State
 const currentTab = ref<'manage' | 'discover' | 'test'>('manage')
@@ -419,9 +420,28 @@ onMounted(async () => {
   await refreshStatus()
   fetchRegistry('')
 })
+
+async function applyModule() {
+  await refreshStatus()
+  if (errorMessage.value)
+    throw new Error(errorMessage.value)
+  return 'MCP servers refreshed and applied'
+}
+
+async function testModule() {
+  await refreshStatus()
+  if (errorMessage.value)
+    throw new Error(errorMessage.value)
+  const servers = status.value?.servers ?? []
+  if (!servers.length)
+    throw new Error('No MCP servers are configured or no MCP bridge is active')
+  return `${servers.length} MCP server(s) reported by the bridge`
+}
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div class="flex flex-col gap-6">
     <!-- Header Area -->
     <div class="flex flex-col gap-4">
@@ -783,6 +803,7 @@ onMounted(async () => {
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <route lang="yaml">

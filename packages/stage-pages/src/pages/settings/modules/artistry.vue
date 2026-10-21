@@ -10,6 +10,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { artistryGenerateHeadless } from '../../../../../../apps/stage-tamagotchi/src/shared/eventa'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 const router = useRouter()
 const artistryStore = useArtistryStore()
@@ -446,9 +447,40 @@ onMounted(() => {
     artistryStore.fetchPollinationsModels()
   }
 })
+
+async function applyModule() {
+  await testModule()
+  return `Artistry provider "${artistryStore.activeProvider}" applied`
+}
+
+async function testModule() {
+  switch (artistryStore.activeProvider) {
+    case 'comfyui': {
+      const res = await fetch(`${artistryStore.comfyuiServerUrl.replace(/\/$/, '')}/system_stats`)
+      if (!res.ok)
+        throw new Error(`ComfyUI responded with HTTP ${res.status}`)
+      return 'ComfyUI server is reachable'
+    }
+    case 'replicate':
+      if (!artistryStore.replicateApiKey.trim())
+        throw new Error('Replicate API key is missing')
+      return 'Replicate API key is set (not verified remotely)'
+    case 'nanobanana':
+      if (!artistryStore.nanobananaApiKey.trim())
+        throw new Error('Nano Banana API key is missing')
+      return 'Nano Banana API key is set (not verified remotely)'
+    case 'pollinations':
+      await artistryStore.fetchPollinationsModels()
+      return 'Pollinations model catalog loaded'
+    default:
+      return `Provider "${artistryStore.activeProvider}" has no connectivity check`
+  }
+}
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div class="flex flex-col gap-6">
     <!-- Header -->
     <div class="flex items-center justify-between">
@@ -806,6 +838,7 @@ onMounted(() => {
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <route lang="yaml">

@@ -9,6 +9,9 @@ import { toast } from 'vue-sonner'
 
 import KnowledgeGraphOverview from '../../knowledge-graph/components/KnowledgeGraphOverview.vue'
 import EntityDetailModal from './components/EntityDetailModal.vue'
+import { useAiriCardStore } from '@proj-airi/stage-ui/stores/modules/airi-card'
+import { storeToRefs } from 'pinia'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 interface CharacterOption { value: string, label: string }
 
@@ -225,9 +228,23 @@ watch(characterOptions, (options) => {
   if (!options.some(option => option.value === selectedCharacter.value))
     selectedCharacter.value = activeCardId.value || 'all'
 }, { immediate: true })
+
+const { activeCardId: moduleCardId } = storeToRefs(useAiriCardStore())
+
+function applyModule() {
+  return 'Memory settings applied'
+}
+
+function testModule() {
+  if (!moduleCardId.value)
+    throw new Error('No active character card, memory cannot be scoped')
+  return 'Active character card found'
+}
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div class="font-urbanist relative flex flex-col gap-8 pb-12">
     <!-- Premium Header -->
     <header class="relative overflow-hidden border border-neutral-200 rounded-3xl bg-neutral-100/40 p-8 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-900/40">
@@ -722,6 +739,7 @@ watch(characterOptions, (options) => {
       @deleted="selectedEntityId = null"
     />
   </div>
+</div>
 </template>
 
 <style scoped>

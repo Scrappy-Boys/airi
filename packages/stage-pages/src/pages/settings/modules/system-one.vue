@@ -5,6 +5,8 @@ import { useProvidersStore } from '@proj-airi/stage-ui/stores/providers'
 import { storeToRefs } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useProviderModuleActions } from '../../../composables/use-provider-module-actions'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 const providersStore = useProvidersStore()
 const systemOneStore = useSystemOneStore()
@@ -187,9 +189,13 @@ const isCurrentProviderConfigured = computed(() => {
     return true
   return !!configuredProviders.value[activeProvider.value]
 })
+
+const { apply: applyModule, test: testModule } = useProviderModuleActions(activeProvider)
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div :class="['bg-neutral-50 dark:bg-neutral-900/40', 'rounded-xl p-4 sm:p-6', 'flex flex-col gap-6']">
     <!-- Header Banner -->
     <div :class="['flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4', 'border border-primary-500/20 bg-primary-500/5 rounded-xl p-4']">
@@ -830,6 +836,7 @@ const isCurrentProviderConfigured = computed(() => {
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <route lang="yaml">

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useTextToMotionStore } from '@proj-airi/stage-ui/stores/modules/text-to-motion'
 import { RouterLink } from 'vue-router'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 const textToMotionStore = useTextToMotionStore()
 
@@ -20,9 +21,22 @@ const modes = [
     badge: 'WebGPU 3D',
   },
 ]
+
+function applyModule() {
+  textToMotionStore.setMode(textToMotionStore.mode)
+  return `Motion engine "${textToMotionStore.mode}" applied`
+}
+
+function testModule() {
+  if (textToMotionStore.mode === 'flowmdm' && !('gpu' in navigator))
+    throw new Error('WebGPU is not available in this environment, FlowMDM cannot run')
+  return textToMotionStore.mode === 'flowmdm' ? 'WebGPU is available for FlowMDM' : 'Procedural engine needs no external resources'
+}
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div class="flex flex-col gap-6">
     <!-- Header -->
     <div>
@@ -103,6 +117,7 @@ const modes = [
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <route lang="yaml">

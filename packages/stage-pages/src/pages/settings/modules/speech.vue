@@ -29,6 +29,8 @@ import { storeToRefs } from 'pinia'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
+import { useProviderModuleActions } from '../../../composables/use-provider-module-actions'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 const { t } = useI18n()
 const providersStore = useProvidersStore()
@@ -319,9 +321,13 @@ function handleDeleteProvider(providerId: string) {
 
   providersStore.deleteProvider(providerId)
 }
+
+const { apply: applyModule, test: testModule } = useProviderModuleActions(activeSpeechProvider)
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div class="flex flex-col gap-6">
     <!-- Tab Navigation -->
     <div class="flex border-b border-neutral-200 pb-2 dark:border-neutral-800">
@@ -788,6 +794,7 @@ function handleDeleteProvider(providerId: string) {
   >
     <div text="60" i-solar:user-speak-rounded-bold-duotone />
   </div>
+</div>
 </template>
 
 <route lang="yaml">

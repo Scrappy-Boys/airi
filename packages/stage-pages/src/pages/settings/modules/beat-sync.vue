@@ -17,6 +17,7 @@ import { createTimeline } from 'animejs'
 import { nanoid } from 'nanoid'
 import { computed, onMounted, onUnmounted, ref, toRaw, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 const state = ref<BeatSyncDetectorState>()
 const frequencies = ref<number[]>([])
@@ -148,9 +149,21 @@ onMounted(() => {
 onUnmounted(() => {
   isUpdatingFrequencies.value = false
 })
+
+function applyModule() {
+  return 'Beat sync settings applied'
+}
+
+function testModule() {
+  if (typeof AudioContext === 'undefined' && typeof (window as any).webkitAudioContext === 'undefined')
+    throw new Error('Web Audio is not available, beat detection cannot run')
+  return 'Web Audio is available for beat detection'
+}
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div flex="~ col md:row gap-6">
     <div bg="neutral-100 dark:[rgba(0,0,0,0.3)]" rounded-xl p-4 flex="~ col gap-4" class="h-fit w-full md:w-[60%]">
       <div flex="~ col gap-6">
@@ -345,6 +358,7 @@ onUnmounted(() => {
       </TransitionGroup>
     </div>
   </div>
+</div>
 </template>
 
 <route lang="yaml">

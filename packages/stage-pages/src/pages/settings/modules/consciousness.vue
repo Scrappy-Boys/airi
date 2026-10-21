@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import { ConsciousnessWorkspace } from '@proj-airi/stage-ui/components'
 import { useI18n } from 'vue-i18n'
+import { useConsciousnessStore } from '@proj-airi/stage-ui/stores/modules/consciousness'
+import { storeToRefs } from 'pinia'
+import { useProviderModuleActions } from '../../../composables/use-provider-module-actions'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 const { t } = useI18n()
+
+const { activeProvider: moduleProvider } = storeToRefs(useConsciousnessStore())
+const { apply: applyModule, test: testModule } = useProviderModuleActions(moduleProvider)
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div :class="['w-full flex flex-col gap-6 p-4 sm:p-6 lg:p-8 max-w-[1400px] mx-auto animate-fadeIn select-none']">
     <!-- Header -->
     <div :class="['flex flex-col gap-1']">
@@ -21,6 +30,7 @@ const { t } = useI18n()
     <!-- Decomposed Canonical Consciousness Workspace in Settings Mode -->
     <ConsciousnessWorkspace mode="settings" />
   </div>
+</div>
 </template>
 
 <style scoped>

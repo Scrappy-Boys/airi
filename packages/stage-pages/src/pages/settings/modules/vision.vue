@@ -12,6 +12,8 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { toast } from 'vue-sonner'
+import { useProviderModuleActions } from '../../../composables/use-provider-module-actions'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 const providersStore = useProvidersStore()
 const visionStore = useVisionStore()
@@ -329,9 +331,13 @@ async function runSimulation() {
     isSimulating.value = false
   }
 }
+
+const { apply: applyModule, test: testModule } = useProviderModuleActions(activeProvider)
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div class="w-full flex flex-col gap-6 lg:flex-row">
     <!-- Left Column: Vision Provider & Model Selection (~42% on landscape) -->
     <div class="w-full shrink-0 lg:w-[42%] xl:w-[38%] space-y-6">
@@ -830,6 +836,7 @@ async function runSimulation() {
   >
     <div text="60" i-solar:eye-scan-bold-duotone />
   </div>
+</div>
 </template>
 
 <route lang="yaml">

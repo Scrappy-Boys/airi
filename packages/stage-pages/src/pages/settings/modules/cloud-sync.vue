@@ -17,6 +17,7 @@ import {
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue-sonner'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 const router = useRouter()
 const syncStore = useSyncEngineStore()
@@ -207,9 +208,25 @@ function isMergeable(key: string): boolean {
     || key.startsWith('local:chat/index/')
   )
 }
+
+async function applyModule() {
+  await syncStore.triggerSync(true)
+  if (syncStore.syncError)
+    throw new Error(String(syncStore.syncError))
+  return 'Sync completed'
+}
+
+async function testModule() {
+  await syncStore.fetchRemoteSyncManifestCatalog()
+  if (syncStore.syncError)
+    throw new Error(String(syncStore.syncError))
+  return `Sync backend "${syncStore.activeProvider}" is reachable`
+}
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div class="flex flex-col gap-6">
     <div class="h-fit w-full flex flex-col gap-4 rounded-xl bg-neutral-100 p-4 dark:bg-[rgba(0,0,0,0.3)]">
       <div>
@@ -699,6 +716,7 @@ function isMergeable(key: string): boolean {
   >
     <div class="i-solar:cloud-bold-duotone text-[60px]" />
   </div>
+</div>
 </template>
 
 <route lang="yaml">

@@ -3,6 +3,9 @@ import { useAiriCardStore } from '@proj-airi/stage-ui/stores/modules/airi-card'
 import { FieldInput } from '@proj-airi/ui'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
+import { useAiriCardStore } from '@proj-airi/stage-ui/stores/modules/airi-card'
+import { storeToRefs } from 'pinia'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 const airiCardStore = useAiriCardStore()
 const { activeCard, activeCardId } = storeToRefs(airiCardStore)
@@ -69,9 +72,23 @@ const statusChips = computed(() => [
   { label: dreamStateEnabled.value ? 'Idle Consolidation' : 'Dream State Disabled', icon: 'i-solar:moon-stars-bold-duotone', active: dreamStateEnabled.value },
   { label: 'Flavor Output', icon: 'i-solar:magic-stick-3-bold-duotone', active: true },
 ])
+
+const { activeCardId: moduleCardId } = storeToRefs(useAiriCardStore())
+
+function applyModule() {
+  return 'Memory settings applied'
+}
+
+function testModule() {
+  if (!moduleCardId.value)
+    throw new Error('No active character card, memory cannot be scoped')
+  return 'Active character card found'
+}
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div class="font-urbanist flex flex-col gap-8 pb-12">
     <!-- Breadcrumb Nav -->
     <nav class="flex items-center gap-2 text-xs text-neutral-500 font-bold tracking-widest uppercase dark:text-neutral-400">
@@ -239,6 +256,7 @@ const statusChips = computed(() => [
       </div>
     </section>
   </div>
+</div>
 </template>
 
 <style scoped>

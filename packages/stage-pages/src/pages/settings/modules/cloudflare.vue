@@ -7,6 +7,7 @@ import { storeToRefs } from 'pinia'
 import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue-sonner'
+import ModuleActionBar from './components/ModuleActionBar.vue'
 
 const router = useRouter()
 const cloudflareStore = useCloudflareStore()
@@ -223,9 +224,31 @@ function handleDisconnect() {
     toast.info('Disconnected from Cloudflare')
   }
 }
+
+async function applyModule() {
+  if (!cfSubdomain.value)
+    throw new Error('Cloudflare subdomain is not configured')
+  await Promise.all([testCorsHealth(), testEmbassyHealth()])
+  return 'Cloudflare workers re-checked'
+}
+
+async function testModule() {
+  if (!cfSubdomain.value)
+    throw new Error('Cloudflare subdomain is not configured')
+  await Promise.all([testCorsHealth(), testEmbassyHealth()])
+  const failed = [
+    corsHealth.value !== 'online' && 'CORS proxy',
+    embassyHealth.value !== 'online' && 'Embassy edge worker',
+  ].filter(Boolean)
+  if (failed.length)
+    throw new Error(`Offline: ${failed.join(', ')}`)
+  return 'CORS proxy and Embassy edge worker are online'
+}
 </script>
 
 <template>
+<div class="flex flex-col gap-4">
+<ModuleActionBar :apply="applyModule" :test="testModule" />
   <div class="flex flex-col gap-6 font-sans">
     <!-- Hero / Account Status Header -->
     <div class="relative flex flex-col items-start justify-between gap-6 overflow-hidden border border-neutral-200/80 rounded-3xl bg-white/70 p-5 shadow-sm backdrop-blur-xl md:flex-row md:items-center dark:border-neutral-800 dark:bg-neutral-900/60 sm:p-6">
@@ -541,6 +564,7 @@ function handleDisconnect() {
     <!-- Connect Dialog Modal -->
     <CloudflareConnectDialog v-model="isConnectModalOpen" />
   </div>
+</div>
 </template>
 
 <route lang="yaml">
